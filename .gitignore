@@ -1,0 +1,3 @@
+*.lock
+nodemon.json
+node_modules
