@@ -1,9 +1,15 @@
-const { gql } = require('apollo-server');
+const { gql } = require('apollo-server-express');
 
-const typeDefs = gql`
+exports.typeDefs = gql`
   type Query {
     launches: [Launch]!
     launch(id: ID!): Launch
+    users: [User]
+  }
+
+  type User {
+    id: ID!
+    name: String!
   }
 
   type Launch {
@@ -25,6 +31,10 @@ const typeDefs = gql`
     missionPatch(size: PatchSize): String
   }
 
+  type Mutation {
+    createUser(name: String!): User
+  }
+
   type TripUpdateResponse {
     success: Boolean!
     message: String
@@ -36,5 +46,3 @@ const typeDefs = gql`
     LARGE
   }
 `;
-
-module.exports = typeDefs;

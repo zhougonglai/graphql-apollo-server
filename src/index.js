@@ -1,19 +1,32 @@
-const { ApolloServer, PubSub } = require('apollo-server');
-
-const typeDefs = require('./schema');
-const resolvers = require('./resolver');
+const { ApolloServer } = require('apollo-server-express');
+const express = require('express');
+const mongoose = require('mongoose');
+const { resolvers } = require('./resolver');
+const { typeDefs } = require('./schema');
 const LaunchAPI = require('./datasources/launch');
 
-const pubsub = new PubSub();
+const startServer = async () => {
+  const app = express();
 
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  dataSources: () => ({
-    launchAPI: new LaunchAPI(),
-  }),
-  context: ({ req, res }) => ({ req, res, pubsub }),
-})
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    context: ({ req, res, connection }) => ({ req, res, connection }),
+    dataSources: () => ({
+      launchAPI: new LaunchAPI(),
+    }),
+  })
 
-server.listen()
-  .then(({ url }) => console.log(`server started at ${url}`))
+  server.applyMiddleware({ app });
+
+  await mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0-y04ex.mongodb.net/${process.env.MONGO_DB}?retryWrites=true`,
+    {
+      useNewUrlParser: true,
+      keepAlive: true,
+    })
+
+  app.listen({ port: 4000 }, () =>
+    console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`));
+};
+
+startServer();
