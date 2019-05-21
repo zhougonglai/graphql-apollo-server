@@ -3,8 +3,15 @@ const { gql } = require('apollo-server-express');
 exports.typeDefs = gql`
   type Query {
     launches: [Launch]!
+    launchesList(pageSize: Int, after: String): LaunchConnection!
     launch(id: ID!): Launch
     users: [User]
+  }
+
+  type LaunchConnection {
+    cursor: String!
+    hasMore: Boolean!
+    launches: [Launch]!
   }
 
   type User {

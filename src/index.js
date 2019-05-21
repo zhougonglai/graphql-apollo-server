@@ -1,6 +1,7 @@
 const { ApolloServer } = require('apollo-server-express');
 const express = require('express');
 const mongoose = require('mongoose');
+const isEmail = require('isemail');
 const { resolvers } = require('./resolver');
 const { typeDefs } = require('./schema');
 const LaunchAPI = require('./datasources/launch');
@@ -11,7 +12,16 @@ const startServer = async () => {
   const server = new ApolloServer({
     typeDefs,
     resolvers,
-    context: ({ req, res, connection }) => ({ req, res, connection }),
+    context: async ({ req }) => {
+      const auth = (req.headers && req.headers.authorization) || '';
+      const email = Buffer.from(auth, 'base64').toString('ascii');
+      if (!isEmail.validate(email)) return { user: null };
+
+      const users = await store.users.findOrCreate({ where: { email } });
+      const user = users && users[0] ? users[0] : null;
+
+      return { user: { ...user.dataValues } };
+    },
     dataSources: () => ({
       launchAPI: new LaunchAPI(),
     }),
@@ -26,7 +36,7 @@ const startServer = async () => {
     })
 
   app.listen({ port: 4000 }, () =>
-    console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`));
+    console.log(`?? Server ready at http://localhost:4000${server.graphqlPath}`));
 };
 
 startServer();
