@@ -1,0 +1,11 @@
+{
+  "name": "mongodb-api",
+  "version": 2,
+  "builds": [{ "src": "src/*.*", "use": "@now/node" }],
+  "routes": [
+    { "src": "/.*", "dest": "src/index.js" }
+  ],
+  "env": {
+    "MONGODB_URI": "@mongodb-uri"
+  }
+}
