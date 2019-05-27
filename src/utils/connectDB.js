@@ -7,7 +7,13 @@ module.exports = async (uri) => {
     return cachedDb;
   }
 
-  const client = await mongoose.connect(uri, { useNewUrlParser: true, keepAlive: true });
+  const client = await mongoose.connect(uri, {
+    useNewUrlParser: true,
+    keepAlive: true,
+    autoReconnect: true,
+    reconnectTries: Number.MAX_VALUE, // Never stop trying to reconnect
+    reconnectInterval: 500,
+  });
   cachedDb = client;
   return client;
 }
