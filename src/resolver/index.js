@@ -7,8 +7,8 @@ const { paginateResults } = require('../utils');
 
 exports.resolvers = {
   Query: {
-    launches: (_, __, { dataSources }) =>
-      dataSources.launchAPI.getAllLaunches(),
+    launches: (_, { launchInput }, { dataSources }) =>
+      dataSources.launchAPI.getAllLaunches(launchInput),
     launch: (_, { id }, { dataSources }) =>
       dataSources.launchAPI.getLaunchById({ launchId: id }),
     launchesList: async (_, { pageSize, after }, { dataSources }) => {

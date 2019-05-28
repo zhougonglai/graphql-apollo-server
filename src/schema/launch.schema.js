@@ -2,7 +2,7 @@ const { gql } = require('apollo-server-express');
 
 module.exports = gql`
   type Query @cacheControl(maxAge: 30){
-    launches: [Launch]!
+    launches(launchInput: LaunchInput): [Launch]!
     launchesList(pageSize: Int, after: String): LaunchConnection!
     launch(id: ID!): Launch
   }
@@ -19,6 +19,10 @@ module.exports = gql`
     site: String
     mission: Mission
     rocket: Rocket
+  }
+
+  input LaunchInput {
+    flight_id: String
   }
 
   type Rocket {
