@@ -13,6 +13,15 @@ const typeDefs = gql`
     code: Int
     msg: String
   }
+
+  # 翻页控制
+  input OutputCtrl {
+    id: Boolean
+    limit: Int
+    offset: Int
+    sort: String
+    order: String
+  }
 `
 
 module.exports = typeDefs

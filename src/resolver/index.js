@@ -7,26 +7,10 @@ const { paginateResults } = require('../utils');
 
 exports.resolvers = {
   Query: {
-    launches: (_, { launchInput }, { dataSources }) =>
-      dataSources.launchAPI.getAllLaunches(launchInput),
+    launches: (_, { launchInput, outputCtrl }, { dataSources }) =>
+      dataSources.launchAPI.getAllLaunches({ ...launchInput, ...outputCtrl }),
     launch: (_, { id }, { dataSources }) =>
       dataSources.launchAPI.getLaunchById({ launchId: id }),
-    launchesList: async (_, { pageSize, after }, { dataSources }) => {
-      const allLaunches = await dataSources.launchAPI.getAllLaunches();
-      allLaunches.reverse();
-      const launches = paginateResults({
-        after, pageSize, results: allLaunches,
-      })
-
-      return {
-        launches,
-        cursor: launches.length ? launches[launches.length - 1].cursor : null,
-        hasMore: launches.length
-          ? launches[launches.length - 1].cursor
-            !== allLaunches[allLaunches.length - 1].cursor
-          : false,
-      }
-    },
     users,
     login,
     user,

@@ -2,15 +2,8 @@ const { gql } = require('apollo-server-express');
 
 module.exports = gql`
   type Query @cacheControl(maxAge: 30){
-    launches(launchInput: LaunchInput): [Launch]!
-    launchesList(pageSize: Int, after: String): LaunchConnection!
+    launches(launchInput: LaunchInput, outputCtrl: OutputCtrl): [Launch]!
     launch(id: ID!): Launch
-  }
-
-  type LaunchConnection {
-    cursor: String!
-    hasMore: Boolean!
-    launches: [Launch]!
   }
 
   type Launch {
