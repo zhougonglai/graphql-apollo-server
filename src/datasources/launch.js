@@ -1,10 +1,11 @@
 const { RESTDataSource } = require('apollo-datasource-rest');
+const DataLoader = require('dataloader')
 
 class LaunchAPI extends RESTDataSource {
   constructor() {
     super();
-    // this.baseURL = 'https://www.easy-mock.com/mock/5cbd107d08c37e59eb3df85f/api/';
     this.baseURL = 'https://api.spacexdata.com/v3/';
+    this.launchLoader = new DataLoader(async launchId => await this.get('launches', { flight_number: launchId }))
   }
 
   /**
@@ -51,8 +52,8 @@ class LaunchAPI extends RESTDataSource {
    * @memberof LaunchAPI
    */
   async getLaunchById({ launchId }) {
-    const response = await this.get('launches', { flight_number: launchId });
-    return this.launchReducer(response[0]);
+    const response = await this.launchLoader.load(launchId);
+    return this.launchReducer(response);
   }
 
   /**

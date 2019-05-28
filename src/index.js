@@ -3,8 +3,8 @@ const express = require('express');
 const isEmail = require('isemail');
 const connectDB = require('./utils/connectDB');
 const { resolvers } = require('./resolver');
-const typeDefs = require('./schema');
 const LaunchAPI = require('./datasources/launch');
+const typeDefs = require('./schema/index');
 
 const app = express();
 
@@ -28,6 +28,7 @@ const server = new ApolloServer({
   formatError: (err) => {
     return err;
   },
+  tracing: true,
   introspection: true,
   playground: true,
 })
@@ -36,8 +37,10 @@ server.applyMiddleware({ app, path: '/' });
 
 connectDB(process.env.MONGODB_URI)
   .then(() => {
-    app.listen({ port: process.env.PORT || 4000 }, () =>
-      console.log(`?? Server ready at http://localhost:${process.env.PORT || 4000}${server.graphqlPath}`));
-  });
+    if (process.env.NODE_ENV !== 'production') {
+      app.listen({ port: process.env.PORT || 4000 }, () =>
+        console.log(`🚀 Server ready at ${process.env.PORT || 4000} at ${server.graphqlPath}`));
+    }
+  })
 
 module.exports = app;

@@ -1,7 +1,7 @@
 const { gql } = require('apollo-server-express');
 
 module.exports = gql`
-  type Query {
+  type Query @cacheControl(maxAge: 30){
     users: [User]
     user: User
     login(userInput: UserInput!): String
