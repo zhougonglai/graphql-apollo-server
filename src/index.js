@@ -76,4 +76,4 @@ connectDB(process.env.MONGODB_URI)
     }
   })
 
-module.exports = httpServer;
+module.exports = app;
