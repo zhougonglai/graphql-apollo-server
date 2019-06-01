@@ -7,6 +7,10 @@ module.exports = gql`
     login(userInput: UserInput!): String
   }
 
+  type Subscription {
+    userObservable: User
+  }
+
   """
   用户
   """
@@ -18,10 +22,10 @@ module.exports = gql`
 
   input UserInput {
     email: String!
-    name: String!
   }
 
   type Mutation {
     createUser(userInput: UserInput!): User
+    updateUser(name: String!): User
   }
 `;

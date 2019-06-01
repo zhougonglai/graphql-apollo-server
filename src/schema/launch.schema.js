@@ -7,10 +7,33 @@ module.exports = gql`
   }
 
   type Launch {
+    """
+    飞行编号
+    """
     id: ID!
+    """
+    日期<php>
+    """
     cursor: Int
+    """
+    网站
+    """
     site: String
+    """
+    描述
+    """
+    details: String
+    """
+    发生成功?
+    """
+    success: Boolean
+    """
+    任务
+    """
     mission: Mission
+    """
+    火箭
+    """
     rocket: Rocket
   }
 
@@ -19,18 +42,29 @@ module.exports = gql`
   }
 
   type Rocket {
+    """
+    火箭编号
+    """
     id: ID!
+    """
+    名字
+    """
     name: String
+    """
+    类型
+    """
     type: String
   }
 
   type Mission{
+    """
+    任务名
+    """
     name: String
-    missionPatch(size: PatchSize): String
-  }
-
-  enum PatchSize {
-    SMALL
-    LARGE
+    """
+    片段
+    """
+    missionPatchSmall: String
+    missionPatchLarge: String
   }
 `;

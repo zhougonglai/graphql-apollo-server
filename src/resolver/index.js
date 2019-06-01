@@ -1,22 +1,24 @@
 const { GraphQLScalarType } = require('graphql')
 const { Kind } = require('graphql/language');
 const {
-  createUser, users, user, login,
+  Query: UserQuery,
+  Mutation: UserMutation,
+  Subscription: UserSubscription,
 } = require('./user');
-const { paginateResults } = require('../utils');
 
 exports.resolvers = {
+  Subscription: {
+    ...UserSubscription,
+  },
   Query: {
     launches: (_, { launchInput, outputCtrl }, { dataSources }) =>
       dataSources.launchAPI.getAllLaunches({ ...launchInput, ...outputCtrl }),
     launch: (_, { id }, { dataSources }) =>
       dataSources.launchAPI.getLaunchById({ launchId: id }),
-    users,
-    login,
-    user,
+    ...UserQuery,
   },
   Mutation: {
-    createUser,
+    ...UserMutation,
   },
   Date: new GraphQLScalarType({
     name: 'Date',

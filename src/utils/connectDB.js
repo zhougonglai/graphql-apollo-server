@@ -9,6 +9,8 @@ module.exports = async (uri) => {
 
   const client = await mongoose.connect(uri, {
     useNewUrlParser: true,
+    useFindAndModify: false,
+    useCreateIndex: true,
     keepAlive: true,
     autoReconnect: true,
     reconnectTries: Number.MAX_VALUE, // Never stop trying to reconnect

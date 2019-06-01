@@ -29,13 +29,15 @@ class LaunchAPI extends RESTDataSource {
   launchReducer(launch) {
     return {
       id: launch.flight_number || 0,
-      cursor: `${launch.launch_date_unix}`,
+      cursor: launch.launch_date_unix,
       site: launch.launch_site && launch.launch_site.site_name,
+      details: launch.details,
       mission: {
         name: launch.mission_name,
         missionPatchSmall: launch.links.mission_patch_small,
         missionPatchLarge: launch.links.mission_patch,
       },
+      success: launch.launch_success,
       rocket: {
         id: launch.rocket.rocket_id,
         name: launch.rocket.rocket_name,
