@@ -8,6 +8,9 @@ module.exports = gql`
   }
 
   type Subscription {
+    """
+    部署版没有订阅器
+    """
     userObservable: User
   }
 

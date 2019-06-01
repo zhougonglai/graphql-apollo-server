@@ -3,7 +3,6 @@ const {
 } = require('apollo-server-express');
 const express = require('express');
 const http = require('http');
-const net = require('net');
 const isEmail = require('isemail');
 const connectDB = require('./utils/connectDB');
 const { resolvers } = require('./resolver');
@@ -61,22 +60,19 @@ server.applyMiddleware({
   },
 });
 
-const httpServer = http.createServer(app);
-server.installSubscriptionHandlers(httpServer);
-
 connectDB(process.env.MONGODB_URI)
   .then(() => {
     if (process.env.NODE_ENV !== 'production') {
       // app.listen({ port: 4000 }, () => {
       //   console.log(`🚀 Server ready at ${server.graphqlPath}`);
       // });
-      httpServer.listen({ port: 4000 }, () => {
+      const httpServer = http.createServer(app);
+      server.installSubscriptionHandlers(httpServer);
+      httpServer.listen({ port: process.env.PORT || 4000 }, () => {
         console.log(`🚀 Server ready at ${server.graphqlPath}`);
         console.log(`🚀 Subscriptions ready at ${server.subscriptionsPath}`);
       });
-    } else {
-      net.createConnection({ path: '/' })
     }
   })
 
-module.exports = app;
+// module.exports = app;
