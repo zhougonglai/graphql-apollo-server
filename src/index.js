@@ -3,6 +3,7 @@ const {
 } = require('apollo-server-express');
 const express = require('express');
 const http = require('http');
+const net = require('net');
 const isEmail = require('isemail');
 const connectDB = require('./utils/connectDB');
 const { resolvers } = require('./resolver');
@@ -73,6 +74,8 @@ connectDB(process.env.MONGODB_URI)
         console.log(`🚀 Server ready at ${server.graphqlPath}`);
         console.log(`🚀 Subscriptions ready at ${server.subscriptionsPath}`);
       });
+    } else {
+      net.createConnection({ path: '/' })
     }
   })
 
