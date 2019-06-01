@@ -3,9 +3,8 @@
   "version": 2,
   "builds": [
     {
-      "src": "src/index.js",
-      "use": "@now/node-server",
-      "config": { "maxLambdaSize": "20mb" }
+      "src": "src/*.*",
+      "use": "@now/node-server"
     }
   ],
   "routes": [
