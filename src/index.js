@@ -62,17 +62,17 @@ server.applyMiddleware({
 
 connectDB(process.env.MONGODB_URI)
   .then(() => {
-    if (process.env.NODE_ENV !== 'production') {
-      // app.listen({ port: 4000 }, () => {
-      //   console.log(`🚀 Server ready at ${server.graphqlPath}`);
-      // });
-      const httpServer = http.createServer(app);
-      server.installSubscriptionHandlers(httpServer);
-      httpServer.listen({ port: process.env.PORT || 4000 }, () => {
-        console.log(`🚀 Server ready at ${server.graphqlPath}`);
-        console.log(`🚀 Subscriptions ready at ${server.subscriptionsPath}`);
-      });
-    }
+    // if (process.env.NODE_ENV !== 'production') {
+    // app.listen({ port: 4000 }, () => {
+    //   console.log(`🚀 Server ready at ${server.graphqlPath}`);
+    // });
+    const httpServer = http.createServer(app);
+    server.installSubscriptionHandlers(httpServer);
+    httpServer.listen({ port: process.env.PORT || 4000 }, () => {
+      console.log(`🚀 Server ready at ${server.graphqlPath}`);
+      console.log(`🚀 Subscriptions ready at ${server.subscriptionsPath}`);
+    });
+    // }
   })
 
 // module.exports = app;
